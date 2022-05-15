@@ -1,0 +1,178 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block css %}
+
+    <link rel="stylesheet" href="{% static 'home/chat/css/chat.css' %}">
+
+    <style>
+        .comments .comment-box {
+            width: 100%;
+            float: left;
+            height: 100%;
+            background-color: #FAFAFA;
+            padding: 10px 10px 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .comments .commenter-name .comment-time {
+            font-weight: normal;
+            margin-left: 8px;
+            font-size: 15px;
+        }
+
+        .comments p.comment-txt {
+            font-size: 15px;
+            border-bottom: 1px solid #ddd;
+            padding: 0px 0px 15px;
+        }
+
+        .comments .commenter-name {
+            display: inline-block;
+            position: relative;
+            top: -20px;
+            left: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <!-- Property Desc Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                <h1 class="mb-3">{{ property.name }}</h1>
+                <p></p>
+            </div>
+            <div class="row g-4">
+
+                <div class="col-md-12 wow fadeInUp" data-wow-delay="0.1s">
+                    <img src="{{ property.photo.url }}" style="height: 700px; width: 100%; object-fit: cover;" alt="">
+                </div>
+                <div class="col-md-12">
+                    <div class="wow fadeInUp" data-wow-delay="0.5s">
+                        <p class="mb-4">{{ property.desc|safe }}</p>
+                        <div class="col-lg-6 col-md-12 mb-5">
+
+                            {% if not is_requested %}
+                                <form method="post" action="{% url 'home:request_visit' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="property_id" value="{{ property.pk }}">
+
+                                    <input class="btn btn-primary py-3 px-5" type="submit"
+                                           value="Request For Property Visit">
+                                </form>
+                            {% else %}
+                                <div class="alert alert-success"> This property has already been requested to visit
+                                </div>
+                            {% endif %}
+
+
+                        </div>
+
+                        <h1 class="mb-3">Leave A Comment</h1>
+                        <form method="post" action="{% url 'home:comment' %}">
+                            {% csrf_token %}
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                            <textarea name="comment" class="form-control" placeholder=""
+                                                      id="message" style="height: 150px" required></textarea>
+                                        <label for="message">Leave a comment here *</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            <div{% if message.tags == 'comment_error_message' %}
+                                                class="alert alert-danger" {% else %}
+                                                class="alert alert-success" {% endif %}>{{ message }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+
+                                </div>
+                                <hr>
+                                <div class="col-lg-3 col-md-12">
+                                    <input value="{{ property.pk }}" type="hidden" name="property_id">
+                                    <input value="Submit Comment" class="btn btn-primary w-100 py-3" type="submit">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Property Desc End -->
+
+    <div class="container">
+        <div class="row">
+            {% for comment in comments %}
+                <div class="col-12">
+                    <div class="comments">
+                        <div class="comment-box">
+                            <span class="commenter-name mt-3">
+                                <a href="#">{{ comment.user.username }}</a> <span class="comment-time">{{ comment.date_of_added }}</span>
+                            </span>
+                            <p class="comment-txt more">{{ comment.comment }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+
+
+
+    <!-- Begin Chat Integration -->
+    <div class="chat-bar-collapsible">
+        <a href="{% url 'chats:view_chat' property.user.username %}" id="chat-button" type="button" class="collapsible">Let's Chat with us !
+            <i id="chat-icon" style="color: #fff;" class="fas fa-comments"></i>
+        </a>
+
+        <div class="content">
+            <div class="full-chat-block">
+                <!-- Message Container -->
+                <div class="outer-container">
+                    <div class="chat-container">
+                        <!-- Messages -->
+                        <div id="chatbox">
+                            <h5 id="chat-timestamp"></h5>
+                            <p id="botStarterMessage" class="botText"><span>Loading...</span></p>
+                        </div>
+
+                        <!-- User input box -->
+                        <div class="chat-bar-input-block">
+                            <div id="userInput">
+
+                                <input id="textInput" class="input-box" type="text" name="msg"
+                                       placeholder="Tap 'Enter' to send a message">
+                                <p></p>
+                            </div>
+
+                            <div class="chat-bar-icons">
+
+                                <i id="chat-icon" style="color: #333;" class="fas fa-paper-plane"
+                                   onclick="sendButton()"></i>
+                            </div>
+                        </div>
+
+                        <div id="chat-bar-bottom">
+                            <p></p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- End Chat Integration -->
+
+{% endblock %}

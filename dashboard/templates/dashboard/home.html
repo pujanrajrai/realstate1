@@ -1,0 +1,130 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Dashboard {% endblock %}
+{% block pagetitle %}Dashboard {% endblock %}
+
+{% block style %}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages': ['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            var data = google.visualization.arrayToDataTable([
+                ['Gender', 'Nos'],
+                ['Male', {{ male }}],
+                ['Female', {{ female|safe }}],
+                ['Others', {{ others }}],
+            ]);
+
+            var options = {
+                title: 'User Gender'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+            chart.draw(data, options);
+        }
+    </script>
+
+
+    <!-- start bar chart (up to down) -->
+    <script>
+        google.charts.load('current', {packages: ['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawBasic);
+
+        function drawBasic() {
+
+            var data = google.visualization.arrayToDataTable([
+                ['Properties', 'Count'],
+                ['Apartment ', {{ apartment_count }}],
+                ['Villa', {{ villa_count }}],
+                ['Home', {{ home_count }}],
+                ['Office', {{ office_count }}],
+                ['Building', {{ building_count }}],
+                ['Townhouse', {{ townhouse_count }}],
+                ['Shop', {{ shop_count }}],
+                ['Garage', {{ garage_count }}],
+
+            ]);
+            var options = {
+                title: 'Properties Count By Categories',
+            };
+            var chart = new google.visualization.ColumnChart(
+                document.getElementById('chart_up_down'));
+            chart.draw(data, options);
+        }
+    </script>
+    <!-- end bar chart (up to down) -->
+{% endblock %}
+
+{% block dashboard_active %}active{% endblock %}
+{% block body %}
+
+    <div class="page-content">
+        <section class="row">
+            <div class="col-12 col-lg-12">
+                <div class="row">
+                    <div class="col-12 col-lg-12 col-md-6">
+                        <div id="piechart" style="width: 100%; height: 500px;"></div>
+                    </div>
+                    <div class="col-12 col-lg-12 col-md-6">
+                        <div id="chart_up_down" style="width: 100%; height: 500px;"></div>
+                    </div>
+                    {#                    <div class="col-6 col-lg-4 col-md-6">#}
+                    {#                        <div class="card">#}
+                    {#                            <div class="card-body px-3 py-4-5">#}
+                    {#                                <div class="row">#}
+                    {#                                    <div class="col-md-4">#}
+                    {#                                        <div class="stats-icon blue">#}
+                    {#                                            <i class="bi bi-building"></i>#}
+                    {#                                        </div>#}
+                    {#                                    </div>#}
+                    {#                                    <div class="col-md-8">#}
+                    {#                                        <h6 class="text-muted font-semibold">Total Properties</h6>#}
+                    {#                                        <h6 class="font-extrabold mb-0">{{ total_comment }}</h6>#}
+                    {#                                    </div>#}
+                    {#                                </div>#}
+                    {#                            </div>#}
+                    {#                        </div>#}
+                    {#                    </div>#}
+                    {#                    <div class="col-6 col-lg-4 col-md-6">#}
+                    {#                        <div class="card">#}
+                    {#                            <div class="card-body px-3 py-4-5">#}
+                    {#                                <div class="row">#}
+                    {#                                    <div class="col-md-4">#}
+                    {#                                        <div class="stats-icon green">#}
+                    {#                                            <i class="bi bi-chat"></i>#}
+                    {#                                        </div>#}
+                    {#                                    </div>#}
+                    {#                                    <div class="col-md-8">#}
+                    {#                                        <h6 class="text-muted font-semibold">Total Comment</h6>#}
+                    {#                                        <h6 class="font-extrabold mb-0">{{ total_comment }}</h6>#}
+                    {#                                    </div>#}
+                    {#                                </div>#}
+                    {#                            </div>#}
+                    {#                        </div>#}
+                    {#                    </div>#}
+                    {#                    <div class="col-6 col-lg-4 col-md-6">#}
+                    {#                        <div class="card">#}
+                    {#                            <div class="card-body px-3 py-4-5">#}
+                    {#                                <div class="row">#}
+                    {#                                    <div class="col-md-4">#}
+                    {#                                        <div class="stats-icon red">#}
+                    {#                                            <i class="bi bi-bookmark-dash-fill"></i>#}
+                    {#                                        </div>#}
+                    {#                                    </div>#}
+                    {#                                    <div class="col-md-8">#}
+                    {#                                        <h6 class="text-muted font-semibold">Total Bookmarked Properties</h6>#}
+                    {#                                        <h6 class="font-extrabold mb-0">{{ total_book_marked }}</h6>#}
+                    {#                                    </div>#}
+                    {#                                </div>#}
+                    {#                            </div>#}
+                    {#                        </div>#}
+                    {#                    </div>#}
+                </div>
+
+            </div>
+        </section>
+    </div>
+{% endblock %}

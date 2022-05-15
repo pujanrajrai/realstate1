@@ -1,0 +1,205 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block body %}
+    <!-- Search Start -->
+    <form method="get" action="{% url 'home:property_search' %}">
+        <div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
+            <div class="container">
+                <div class="row g-2">
+                    <div class="col-md-10">
+                        <div class="row g-2">
+                            <div class="col-md-4">
+                                <div><h4 class="text-white">Status</h4></div>
+                                <select name="status" class="form-select border-0 py-3">
+                                    <option value="any" selected>ANY</option>
+
+                                    {% for status in properties_status %}
+                                        <option value="{{ status.status }}"
+                                                {% if status.status == p_status %}selected{% endif %}>{{ status.status }}</option>
+                                    {% endfor %}
+
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <div><h4 class="text-white">Property Type</h4></div>
+                                <select name="category" class="form-select border-0 py-3">
+                                    <option value="any" selected>Any</option>
+                                    {% for category in properties_categories %}
+                                        <option value="{{ category.category }}"
+                                                {% if category.category == p_category %}selected{% endif %}>{{ category }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <div><h4 class="text-white">Location</h4></div>
+                                <select name="state" class="form-select border-0 py-3">
+                                    <option value="any" selected>Any</option>
+                                    {% for state in states %}
+                                        <option value="{{ state.name }}"
+                                                {% if state.name == p_state %}selected{% endif %}>{{ state.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-dark border-0 w-100 py-3" style="margin-top: 38px;">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- Search End -->
+
+    <!-- Property List Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-0 gx-5 align-items-end">
+                <div class="col-lg-6">
+                    <div class="text-start mx-auto mb-5 wow slideInLeft" data-wow-delay="0.1s">
+                        <h1 class="mb-3">Property Listing</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content">
+
+                <div id="tab-1" class="tab-pane fade show p-0 active">
+                    <div class="row g-4">
+
+                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                            <!-- Start Sidebar price filter section -->
+                            <section id="sidebar">
+
+                                <div class="border-bottom pb-2 ml-2">
+                                    <h4 id="filter">Filter</h4>
+                                </div>
+                                <div class="py-2 border-bottom ml-3">
+                                    <h6 class="font-weight-bold">Price Range</h6>
+                                    <div id=""><span class="fa fa-minus"></span></div>
+                                    <form method="get" action="{% url 'home:property_search' %}">
+                                        <input type="hidden" value="{{ p_state }}" name="state">
+                                        <input type="hidden" value="{{ p_status }}" name="status">
+                                        <input type="hidden" value="{{ p_category }}" name="category">
+                                        <div class="form-group"><input type="checkbox" value="100000" name="price"
+                                                                       id="1lakh"
+                                                                       {% if price == 100000 %}checked{% endif %}>
+                                            <label
+                                                    for="1lakh">Upto 1 Lakh</label></div>
+                                        <div class="form-group"><input type="checkbox" value="1000000" name="price"
+                                                                       id="10lakh"
+                                                                       {% if price == 1000000 %}checked{% endif %}>
+                                            <label
+                                                    for="10lakh">1 Lakh - 10 Lakh</label></div>
+                                        <div class="form-group"><input type="checkbox" value="5000000" name="price"
+                                                                       id="50lakh"
+                                                                       {% if price == 5000000 %}checked{% endif %}>
+                                            <label
+                                                    for="50lakh">10 Lakh - 50 Lakh</label></div>
+                                        <div class="form-group"><input type="checkbox" value="10000000" name="price"
+                                                                       id="1cr"
+                                                                       {% if price == 10000000 %}checked{% endif %}>
+                                            <label
+                                                    for="1cr">50 Lakh - 1 Crore</label></div>
+                                        <div class="form-group"><input type="checkbox" value="10000001" name="price"
+                                                                       id="above1cr"
+                                                                       {% if price == 10000001 %}checked{% endif %}>
+                                            <label
+                                                    for="above1cr">Above 1 Crore</label></div>
+                                        <div class="form-group"><input type="submit" value="Apply Filter"
+                                                                       class="btn btn-primary px-3 mb-3 mt-4"></div>
+
+                                    </form>
+
+                                </div>
+                                <!-- End Sidebar price filter section -->
+                            </section>
+                        </div>
+                        {% if no_data %}
+                            <div class="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                                <div class="alert alert-danger">{{ no_data }}</div>
+                            </div>
+                        {% endif %}
+                        {% for property in properties %}
+                            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                                <div class="property-item rounded overflow-hidden">
+                                    <div class="position-relative overflow-hidden">
+                                        <a href="{% url 'home:property_desc' property.pk %}"><img class="img-fluid"
+                                                                                                  src="{{ property.photo.url }}"
+                                                                                                  alt=""></a>
+                                        <div
+                                                class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
+                                            {{ property.status }}
+                                        </div>
+                                        <div
+                                                class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                            {{ property.category }}
+                                        </div>
+                                    </div>
+                                    <div class="p-4 pb-0">
+                                        <h5 class="text-primary mb-3">RS. {{ property.price }}</h5>
+                                        <a href="{% url 'home:property_desc' property.pk %}" class="d-block h5 mb-2"
+                                           href="">{{ property.name }}</a>
+                                        <p>
+                                            <i class="fa fa-map-marker-alt text-primary me-2"></i>State: {{ property.location_state }}, {{ property.location }}
+                                        </p>
+                                    </div>
+                                    <div class="d-flex border-top">
+                                        <small class="flex-fill text-center border-end py-2"><i
+                                                class="fas fa-money-bill-wave text-primary me-2"></i>
+                                            {% if property.is_price_negotiable %}Negotiable Price{% else %}Fixed
+                                                Price{% endif %}</small>
+
+                                        <small class="flex-fill text-center border-end py-2">
+
+                                                {% if not property in bookmarked_properties %}
+                                                    <form method="post" action="{% url 'home:property_bookmark' %}">
+                                                {% csrf_token %}
+                                                <input type="hidden" value="{{ property.id }}" name="property_id">
+                                                    <button style="all: unset; cursor: pointer;"><i
+                                                            class="far fa-bookmark text-primary me-2"></i> Bookmark
+                                                    </button>
+
+                                                    </form>
+
+                                                {% else %}
+                                                    <form method="post" action="{% url 'home:remove_watchlist' %}">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" value="{{ property.pk }}"
+                                                               name="property_id">
+                                                        <button style="all: unset; cursor: pointer;"><i
+                                                                class="fas fa-bookmark text-primary me-2"></i> Bookmarked
+                                                        </button>
+                                                    </form>
+
+
+                                                {% endif %}
+
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Property List End -->
+
+
+{% endblock %}
+
+{% block js %}
+        <script
+                src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('input:checkbox').click(function () {
+                    $('input:checkbox').not(this).prop('checked', false);
+                });
+            });
+        </script>
+    {% endblock %}

@@ -1,0 +1,441 @@
+{##}
+{#{% load static %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{##}
+{#<head>#}
+{#    <meta charset="utf-8">#}
+{#    <title>Real Estate | Login-Register</title>#}
+{#    <meta content="width=device-width, initial-scale=1.0" name="viewport">#}
+{#    <meta content="" name="keywords">#}
+{#    <meta content="" name="description">#}
+{##}
+{#    <!-- Favicon -->#}
+{#    <link href="{% static 'img/carousel-1.jpg' %}" rel="icon">#}
+{##}
+{#    <!-- Icon Font Stylesheet -->#}
+{#    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">#}
+{#    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">#}
+{##}
+{#    <!-- Libraries Stylesheet -->#}
+{#    <link href="{% static 'home/css/owl.carousel.min.css' %}" rel="stylesheet">#}
+{##}
+{#    <!-- Customized Bootstrap Stylesheet -->#}
+{#    <link href="{% static 'home/css/bootstrap.min.css' %}" rel="stylesheet">#}
+{##}
+{#    <!-- Custom Stylesheet -->#}
+{#    <link href="{% static 'home/css/style.css' %}" rel="stylesheet">#}
+{#    <!-- Login, Regsiter CSS -->#}
+{#    <link rel="stylesheet" href="{% static 'login-style.css' %}">#}
+{##}
+{#</head>#}
+{##}
+{#<body>#}
+{##}
+{#<div class="container-xxl p-0">#}
+{#    <!-- Spinner Start -->#}
+{#    <div id="spinner"#}
+{#         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">#}
+{#        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">#}
+{#            <span class="sr-only">Loading...</span>#}
+{#        </div>#}
+{#    </div>#}
+{#    <!-- Spinner End -->#}
+{##}
+{##}
+{#    <!-- Navbar Start -->#}
+{#    <style>#}
+{#        .login-nav-bar {#}
+{#            position: relative;#}
+{#            margin-top: 145px;#}
+{#            padding: 0 3rem;#}
+{#            transition: .5s;#}
+{#            z-index: 9999;#}
+{#        }#}
+{##}
+{#        .login-nav-bar.sticky-top {#}
+{#            position: sticky;#}
+{#            padding: 0;#}
+{#            z-index: 9999;#}
+{#        }#}
+{##}
+{#        @media (max-width: 991.98px) {#}
+{#            .login-nav-bar {#}
+{#                margin: 0;#}
+{#                padding: 0;#}
+{#            }#}
+{#        }#}
+{#    </style>#}
+{#    <div class="container-fluid login-nav-bar bg-transparent">#}
+{#            <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">#}
+{#                <a href="../index.html" class="navbar-brand d-flex align-items-center text-center">#}
+{##}
+{#                    <h1 class="m-0 text-primary">Real Estate</h1>#}
+{#                </a>#}
+{#                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">#}
+{#                    <span class="navbar-toggler-icon"></span>#}
+{#                </button>#}
+{#                <div class="collapse navbar-collapse" id="navbarCollapse">#}
+{#                    <div class="navbar-nav ms-auto">#}
+{#                        <a href="../index.html" class="nav-item nav-link">Home</a>#}
+{#                        <div class="nav-item dropdown">#}
+{#                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Property</a>#}
+{#                            <div class="dropdown-menu rounded-0 m-0">#}
+{#                                <a href="../property-list.html" class="dropdown-item">Property List</a>#}
+{#                                <a href="../property-desc.html" class="dropdown-item">Property Description</a>#}
+{#                            </div>#}
+{#                        </div>#}
+{##}
+{#                        <a href="../contact.html" class="nav-item nav-link">Contact</a>#}
+{#                    </div>#}
+{#                    <a href="#" class="btn btn-primary px-3 mb-2 d-lg-flex">LOGIN</a>#}
+{#                </div>#}
+{#            </nav>#}
+{#    </div>#}
+{#    <!-- Navbar End -->#}
+{##}
+{#    <center>#}
+{#        <div class="container mt-5">#}
+{#            <div class="redBg">#}
+{#                <div class="box signin">#}
+{#                    <h2>Already have an account?</h2>#}
+{#                    <a class="signinBtn">Sign In</a>#}
+{#                    <a href="/">#}
+{#                        <button class="signinBtn mt-1">Back Home</button>#}
+{#                    </a>#}
+{##}
+{#                </div>#}
+{#                <div class="box signup">#}
+{#                    <h2>Don't have an account? </h2>#}
+{#                    <a class="signinBtn" href="{% url 'accounts:login' %}"><button class="signinBtn mt-1">Sign In</button></a>#}
+{##}
+{#                    <a href="/">#}
+{#                        <button class="signupBtn mt-1">Back Home</button>#}
+{#                    </a>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="formBx">#}
+{#                <div class="form signinform">#}
+{#                    <form method="post">#}
+{#                        {% csrf_token %}#}
+{#                        {% if errors %}#}
+{#                            <h3 class="error" style="color: red;"><b>{{ errors }}</b></h3>#}
+{#                        {% endif %}#}
+{#                        <h3>Sign up</h3>#}
+{#                        <input type="text" name="username" value="{{ username }}" placeholder="Username">#}
+{#                        <input type="email" name="email" value="{{ email }}" placeholder="Email Address">#}
+{#                        <input type="Password" name="password" placeholder="Password">#}
+{#                        <input type="password" name="password2" placeholder="confirm password">#}
+{#                        <center>#}
+{#                            <input type="submit" value="Register">#}
+{#                        </center>#}
+{#                    </form>#}
+{#                </div>#}
+{#                    <div class="form signupform">#}
+{#                        <form action="#">#}
+{#                            <h3>Sign up</h3>#}
+{#                            <input type="text" placeholder="Username">#}
+{#                            <input type="email" placeholder="Email Address">#}
+{#                            <input type="Password" placeholder="Password">#}
+{#                            <input type="password" placeholder="confirm password">#}
+{#                            <center>#}
+{#                                <input type="submit" value="Register">#}
+{#                            </center>#}
+{#                        </form>#}
+{#                    </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </center>#}
+{##}
+{##}
+{#    <!-- JavaScript Libraries -->#}
+{#    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>#}
+{#    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>#}
+{#    <script src="{% static 'home/js/wow.min.js' %}"></script>#}
+{#    <script src="{% static 'home/js/owl.carousel.min.js' %}"></script>#}
+{##}
+{#    <!-- Custom Javascript -->#}
+{#    <script src="{% static 'home/js/main.js' %}"></script>#}
+{#    <script>#}
+{#        const signinBtn = document.querySelector('.signinBtn');#}
+{#        const signupBtn = document.querySelector('.signupBtn');#}
+{#        const formBx = document.querySelector('.formBx');#}
+{#        const body = document.querySelector('body');#}
+{##}
+{#        signupBtn.onclick = function () {#}
+{#            formBx.classList.add('active')#}
+{#            body.classList.add('active')#}
+{#        }#}
+{#        signinBtn.onclick = function () {#}
+{#            formBx.classList.remove('active')#}
+{#            body.classList.remove('active')#}
+{#        }#}
+{#    </script>#}
+{##}
+{#</body>#}
+{##}
+{#</html>#}
+
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Real Estate | Login-Register</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="{% static 'home/img/carousel-1.jpg' %}" rel="icon">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static 'home/css/owl.carousel.min.css' %}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'home/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom Stylesheet -->
+    <link href="{% static 'home/css/style.css' %}" rel="stylesheet">
+
+    <!-- Login, Regsiter CSS -->
+    <link href="{% static 'home/css/login-register.css' %}" rel="stylesheet">
+
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+<div class="login-nav-bar bg-transparent">
+    {#    <div class="container-fluid nav-bar bg-transparent">#}
+    <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
+        <a href="{% url 'home:home' %}" class="navbar-brand d-flex align-items-center text-center">
+            <h1 class="m-0 text-primary">Real Estate</h1>
+        </a>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto">
+                <a href="{% url 'home:home' %}" class="nav-item nav-link active">Home</a>
+                <a href="{% url 'home:property_search' %}?status=any&category=any&state=any"
+                   class="nav-item nav-link">Property</a>
+                <a href="/contactus/" class="nav-item nav-link">Contact</a>
+            </div>
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'dashboard:home' %}" class="btn btn-primary px-3 mb-2 d-lg-flex">Dashboard</a>
+            {% else %}
+
+                <a href="/accounts/login" class="btn btn-primary px-3 mb-2 d-lg-flex">LOGIN</a>
+
+            {% endif %}
+        </div>
+    </nav>
+    {#    </div>#}
+</div>
+
+<main>
+    <div class="box">
+        <div class="inner-box">
+            <div class="forms-wrap">
+                <form method="post" autocomplete="off" class="sign-in-form">
+                    {% csrf_token %}
+
+                    <div class="logo">
+                        <!-- <img src="./img/logo.png" alt="Real Estate" /> -->
+                        <h2>REGISTRATION PANEL</h2>
+                    </div>
+
+                    <div class="heading">
+                        <!-- <h2>Get Started</h2> -->
+                        <h6>Already have an account?</h6>
+                        <a href="{% url 'accounts:login' %}" class="toggle"><i class="fas fa-sign-in-alt"></i> Click
+                            Here</a>
+                    </div>
+
+                    <div class="actual-form">
+                        <label><i class="fas fa-user"></i> Username</label>
+                        <div class="input-wrap">
+                            <input type="text" name="username" value="{{ username }}" placeholder="Username"
+                                   minlength="4" class="input-field" autocomplete="off" required/>
+
+                        </div>
+                        <label><i class="fas fa-envelope"></i> Email</label>
+                        <div class="input-wrap">
+                            <input type="email" name="email" value="{{ email }}" placeholder="Email Address"
+                                   class="input-field" autocomplete="off" required/>
+                        </div>
+                        <label><i class="fas fa-lock"></i> Password</label>
+                        <div class="input-wrap">
+                            <input type="Password" name="password" placeholder="Password" minlength="4"
+                                   class="input-field" autocomplete="off" required/>
+                        </div>
+                        <label><i class="fas fa-lock"></i> Confirm Password</label>
+                        <div class="input-wrap">
+                            <input type="password" name="password2" placeholder="confirm password" minlength="4"
+                                   class="input-field" autocomplete="off" required/>
+                        </div>
+                        <input type="submit" value="Sign Up" class="sign-btn"/>
+
+                        {% if errors %}
+                            <div class="alert alert-danger" role="alert">
+                            {% for key, value in errors.items %}
+                                {{ value.as_ul }}
+                            {% endfor %}
+
+                            </div>
+                        {% endif %}
+                        <a href="/" class="sign-btn text-center text-white p-2"><i
+                                class="fas fa-hand-point-left"
+                                style="font-size: 18px;"></i>&nbsp;Back
+                            Home</a>
+                    </div>
+
+                </form>
+
+                <form method="post" autocomplete="off" class="sign-up-form">
+                    {% csrf_token %}
+                    <div class="logo">
+                        <!-- <img src="./img/logo.png" alt="Real Estate" /> -->
+                        <h2>LOGIN PANEL</h2>
+                    </div>
+
+
+                    <div class="actual-form">
+                        <label><i class="fas fa-user"></i> Email</label>
+                        <div class="input-wrap">
+                            <input type="email" value="{{ email }}" name="email" placeholder="Enter Your Email"
+                                   minlength="4" class="input-field" autocomplete="off" required/>
+
+                        </div>
+                        <label><i class="fas fa-lock"></i> Password</label>
+                        <div class="input-wrap">
+
+                            <input type="Password" name="password" placeholder="Password" minlength="4"
+                                   class="input-field" autocomplete="off" required/>
+                        </div>
+
+                        <input type="submit" value="Sign In" class="sign-btn"/>
+                        {% if errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ errors }}
+                            </div>
+                        {% endif %}
+
+
+                        <a href="../index.html" class="sign-btn text-center text-white p-2"><i
+                                class="fas fa-hand-point-left"
+                                style="font-size: 18px;"></i>&nbsp;Back
+                            Home</a>
+
+                        <div class="heading">
+                            <h6>Do not have an acoount?</h6>
+                            <a href="#" class="toggle"><i class="fas fa-sign-in-alt"></i> Click Here</a>
+
+                        </div>
+
+
+                    </div>
+
+                </form>
+
+
+            </div>
+
+
+            <div class="carousel">
+                <div class="images-wrapper">
+                    <img src="{% static 'home/register.svg' %}" class="image img-1 show" alt=""/>
+                    <img src="{% static 'home/login.svg' %}" class="image img-2" alt=""/>
+                    <img src="{% static 'home/start.svg' %}" class="image img-3" alt=""/>
+                </div>
+
+                <div class="text-slider">
+                    <div class="text-wrap">
+                        <div class="text-group">
+                            <h2>Do not have an account, Register!</h2>
+                            <h2>Already have an Account, Login!</h2>
+                            <h2>Get started with Real Estate</h2>
+                        </div>
+                    </div>
+
+                    <div class="bullets">
+                        <span class="active" data-value="1"></span>
+                        <span data-value="2"></span>
+                        <span data-value="3"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<script></script>
+
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'home/js/wow.min.js' %}"></script>
+<script src="{% static 'home/js/owl.carousel.min.js' %}"></script>
+
+<!-- Custom Javascript -->
+{#<script src="{% static 'home/js/app.js' %}"></script>#}
+{#<script src="{% static 'home/js/main.js' %}"></script>#}
+<script>
+    const inputs = document.querySelectorAll(".input-field");
+    const toggle_btn = document.querySelectorAll(".toggle");
+    const main = document.querySelector("main");
+    const bullets = document.querySelectorAll(".bullets span");
+    const images = document.querySelectorAll(".image");
+
+    inputs.forEach((inp) => {
+        inp.addEventListener("focus", () => {
+            inp.classList.add("active");
+        });
+        inp.addEventListener("blur", () => {
+            if (inp.value != "") return;
+            inp.classList.remove("active");
+        });
+    });
+
+    toggle_btn.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            main.classList.toggle("sign-up-mode");
+        });
+    });
+
+    function moveSlider() {
+        let index = this.dataset.value;
+
+        let currentImage = document.querySelector(`.img-${index}`);
+        images.forEach((img) => img.classList.remove("show"));
+        currentImage.classList.add("show");
+
+        const textSlider = document.querySelector(".text-group");
+        textSlider.style.transform = `translateY(${-(index - 1) * 2.2}rem)`;
+
+        bullets.forEach((bull) => bull.classList.remove("active"));
+        this.classList.add("active");
+    }
+
+    bullets.forEach((bullet) => {
+        bullet.addEventListener("click", moveSlider);
+    });
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block body %}
+    <div class="container-fluid header mt-0 bg-white p-0">
+        <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
+            <div class="col-md-12 p-5 mt-lg-5">
+                <h1 class="display-5 animated fadeIn mb-4">Bookmark</h1>
+            </div>
+
+        </div>
+    </div>
+    <div class="container-fluid pt-5">
+        <div class="row px-xl-5">
+            <div class="col-lg-12 table-responsive mb-5">
+                <table class="table table-bordered text-center mb-0">
+                    <thead class="bg-dark text-white">
+                    <tr>
+                        <th>Property</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>IS price Negotiable</th>
+                        <th>IS Property Available</th>
+                        <th>Action</th>
+                        <th>Remove</th>
+                    </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                    {% for bookmark in bookmarks %}
+                        <tr>
+                            <td class="align-middle"><img src="{{ bookmark.property.photo.url }}" alt=""
+                                                          style="width: 50px;">
+                                {{ bookmark.property.name }}
+                            </td>
+                            <td class="align-middle">Rs. {{ bookmark.property.price }}</td>
+
+                            <td class="align-middle">{{ bookmark.property.category }}</td>
+                            <td class="align-middle">{{ bookmark.property.is_price_negotiable }}</td>
+                            <td class="align-middle">{{ bookmark.property.is_available }}</td>
+                            <td class="align-middle">
+                                <form method="post" action="{% url 'home:request_visit' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="{{ bookmark.property.pk }}" name="property_id">
+                                    <input class="btn btn-success" type="submit" value="Request a Visit">
+                                </form>
+                            </td>
+                            <td class="align-middle">
+                                <form method="post" action="{% url 'home:remove_watchlist' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="{{ bookmark.property.pk }}" name="property_id">
+                                    <button class="btn btn-sm btn-primary"><i
+                                        class="fa fa-times"></i></button>
+                                </form>
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
